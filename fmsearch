@@ -1,0 +1,42 @@
+#!/bin/bash
+# Search multiple words (inclusive)
+PROG_NAME=$(basename $0)
+l=$(($#-1))
+
+# Colors
+ESC_SEQ="\x1b["
+COL_RESET=$ESC_SEQ"39;49;00m"
+COL_RED=$ESC_SEQ"31;01m"
+COL_GREEN=$ESC_SEQ"32;01m"
+COL_YELLOW=$ESC_SEQ"33;01m"
+COL_BLUE=$ESC_SEQ"34;01m"
+COL_MAGENTA=$ESC_SEQ"35;01m"
+COL_CYAN=$ESC_SEQ"36;01m"
+
+for f in $(find $1 -name "$2"); do
+if [ -f $f ]; then
+    declare -a tab tab2 
+    for (( i=3;  i <= $#; i++ )); do
+        ret=$(grep -c "${!i}" "$f")
+        if [ $ret -gt 0 ]; then
+	    tab[${#tab[*]}]=${!i}
+	    tab2[${#tab2[*]}]=$ret
+        fi
+    done
+#	exit
+    if [ ${#tab[*]} -eq 0 ];then
+        unset tab tab2
+        continue
+    fi
+    s=""
+    for j in ${!tab[*]}; do
+        s+="\"${tab[$j]}\" (${tab2[$j]})"
+        if [ ${#tab[*]} -gt $(($j+1)) ]; then
+            s+=", "
+        fi
+    done
+    unset tab
+    echo -e $COL_YELLOW$f$COL_RESET" for the expression(s) "$COL_GREEN$s$COL_RESET
+fi
+done
+exit 0
