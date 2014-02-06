@@ -3,6 +3,30 @@
 PROG_NAME=$(basename $0)
 l=$(($#-1))
 
+# parameters
+EXCLUSIVE=0
+FOLDER=$1
+FNAME=$2
+WORDPARAM=3
+
+# options
+while getopts e: OPTION
+do
+    case ${OPTION} in
+        e) EXCLUSIVE=1;;
+      \?) print -u2 "Usage: ${PROG_NAME} [ -e ]"
+           exit 2;;
+    esac
+done
+
+if [ ${EXCLUSIVE} -eq 1 ];then
+FOLDER=$2
+FNAME=$3
+WORDPARAM=4
+fi
+
+SEARCHED_WORD=$(($#+1-$WORDPARAM))
+
 # Colors
 ESC_SEQ="\x1b["
 COL_RESET=$ESC_SEQ"39;49;00m"
@@ -13,10 +37,10 @@ COL_BLUE=$ESC_SEQ"34;01m"
 COL_MAGENTA=$ESC_SEQ"35;01m"
 COL_CYAN=$ESC_SEQ"36;01m"
 
-for f in $(find $1 -name "$2"); do
+for f in $(find $FOLDER -name "$FNAME"); do
 if [ -f $f ]; then
     declare -a tab tab2 
-    for (( i=3;  i <= $#; i++ )); do
+    for (( i=$WORDPARAM;  i <= $#; i++ )); do
         ret=$(grep -c "${!i}" "$f")
         if [ $ret -gt 0 ]; then
 	    tab[${#tab[*]}]=${!i}
@@ -24,6 +48,13 @@ if [ -f $f ]; then
         fi
     done
 #	exit
+    # Exclusive option is set so when tab length of the found words
+    # is less than the number of searched words, don't show the result
+    if [[ ${EXCLUSIVE} -eq 1 && ${#tab[*]} -lt ${SEARCHED_WORD} ]];then
+        unset tab tab2
+        continue
+    fi
+
     if [ ${#tab[*]} -eq 0 ];then
         unset tab tab2
         continue
