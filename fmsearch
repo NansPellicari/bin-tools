@@ -10,12 +10,12 @@ FNAME=$2
 WORDPARAM=3
 
 # options
-while getopts eh: OPTION
+while getopts eh OPTION
 do
     case ${OPTION} in
         e) EXCLUSIVE=1;;
-#        h) echo "Usage: ${PROG_NAME} [ -e -h ] directory filetype expression1 [expression N]"
- #          exit 2;;
+        h) echo "Usage: ${PROG_NAME} [ -e -h ] directory filetype expression1 [expression N]"
+           exit 2;;
       \?) echo -u2 "Usage: ${PROG_NAME} [ -e -h ]"
            exit 2;;
     esac
