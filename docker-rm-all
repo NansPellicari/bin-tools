@@ -1,0 +1,14 @@
+#!/bin/bash
+# Delete all containers
+
+
+if [ -z "$1" ]; then
+    echo "All container will be deleted"
+    sudo docker rm $(sudo docker ps -a -q)
+else
+    for ARG in "$@"
+    do
+        sudo docker rm $ARG
+        echo "Container $ARG has been deleted"
+    done
+fi

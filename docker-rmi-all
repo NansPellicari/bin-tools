@@ -1,0 +1,13 @@
+#!/bin/bash
+# Delete all images
+
+if [ -z "$1" ]; then
+    echo "All images will be deleted"
+    sudo docker rmi $(docker images -q)
+else
+    for ARG in "$@"
+    do
+        sudo docker rmi $ARG
+        echo "Image $ARG will has been deleted"
+    done
+fi
