@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sudo docker-compose stop
+docker-rm-all
+sudo make server_test

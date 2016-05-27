@@ -1,0 +1,3 @@
+#!/bin/bash
+
+git fetch && git stash && git checkout develop && git branch --merged | awk '{if($1 != "*") system("git branch -d "$1) }'

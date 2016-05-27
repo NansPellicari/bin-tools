@@ -1,0 +1,7 @@
+#!/bin/bash
+
+git fetch
+git co master
+git pr
+git mnf origin/develop
+git lga -10

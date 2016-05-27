@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git fetch
+git co $1
+git pr
+git rb origin/develop
+git lga -10
+git co develop
+git pr
+git mnf $1
