@@ -1,0 +1,12 @@
+#!/bin/bash
+
+GREEN='\033[0;33m'
+NC='\033[0m'
+
+printf $GREEN
+echo "======================"
+echo "Parameters updates:"
+echo "======================"
+printf $NC
+git diff $1..HEAD app/config/parameters.yml.dist
+

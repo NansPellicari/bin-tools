@@ -1,7 +1,17 @@
 #!/bin/bash
 
+BR=$1
+
+if [ -z "$BR" ]; then
+    BR=master
+fi
+
 git fetch
-git co master
+git co $1
 git pr
 git mnf origin/develop
 git lga -10
+
+bash rf-check-parameters
+bash make-changelog $2
+
