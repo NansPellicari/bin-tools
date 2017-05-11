@@ -1,0 +1,7 @@
+#!/bin/bash
+# Delete all containers
+
+if [ -z "$1" ]; then
+    echo "All stopped container will be deleted"
+    sudo docker rm -v $(sudo docker ps -a -q -f status=exited)
+fi
